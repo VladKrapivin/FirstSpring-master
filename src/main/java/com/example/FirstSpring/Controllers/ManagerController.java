@@ -16,101 +16,101 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class BrokerController {
+public class ManagerController {
     @Autowired
     UserService userService;
     @Autowired
-    TemporaryUserBrokerRepository temporaryUserBrokerRepository;
+    TemporaryUserManagerRepository temporaryUserManagerRepository;
 
     @Autowired
-    UserBrokerCoinRepository userBrokerCoinRepository;
+    UserManagerResidentialComplexRepository userManagerResidentialComplexRepository;
 
     @Autowired
-    CoinRepository coinRepository;
+    CoinRepository ResidentialComplexRepository;
     @Autowired
-    UserCoinRepository userCoinRepository;
+    UserResidentialComplexRepository userResidentialComplexRepository;
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("/broker")
+    @GetMapping("/manager")
     public String startBrokerPage(@AuthenticationPrincipal User user,
                                   Model model) {
-        model.addAttribute("allRequests", temporaryUserBrokerRepository.findAll());
+        model.addAttribute("allRequests", temporaryUserManagerRepository.findAll());
         model.addAttribute("user",user);
-        return "broker";
+        return "manager";
     }
 
-    @PostMapping("/broker")
+    @PostMapping("/manager")
     public String requestOK(@AuthenticationPrincipal User user,
                                   @RequestParam Long clientId,
                                   @RequestParam Long coinId,
                                   Model model) {
         User client = userService.findUserById(clientId);
-        Optional<Coin> coin = coinRepository.findById(coinId);
-        TemporaryUserBroker tUB = temporaryUserBrokerRepository.findByUserAndCoin(client, coin.get());
-        temporaryUserBrokerRepository.delete(tUB);
-        UserBrokerCoin UBC = new UserBrokerCoin(client,user,coin.get());
-        userBrokerCoinRepository.save(UBC);
+        Optional<ResidentialComplex> coin = ResidentialComplexRepository.findById(coinId);
+        TemporaryUserManager tUB = temporaryUserManagerRepository.findByUserAndCoin(client, coin.get());
+        temporaryUserManagerRepository.delete(tUB);
+        UserManagerResidentialComplex UBC = new UserManagerResidentialComplex(client,user,coin.get());
+        userManagerResidentialComplexRepository.save(UBC);
         model.addAttribute("user",user);
-        return "redirect:/broker";
+        return "redirect:/manager";
     }
 
     //недоделана
-    @GetMapping("/broker/clients")
+    @GetMapping("/manager/clients")
     public String userList(@AuthenticationPrincipal User user,
                            Model model) {
-        List<UserBrokerCoin> uBCList = userBrokerCoinRepository.findByBroker(user);
-        List<UserCoin> UCLIST = new ArrayList<>();
-        for(UserBrokerCoin coin : uBCList) {
-            UserCoin UC = userCoinRepository.findByUserAndCoin(coin.getUser(), coin.getCoin());
+        List<UserManagerResidentialComplex> uBCList = userManagerResidentialComplexRepository.findByManager(user);
+        List<UserResidentialcomplex> UCLIST = new ArrayList<>();
+        for(UserManagerResidentialComplex coin : uBCList) {
+            UserResidentialcomplex UC = userResidentialComplexRepository.findByUserAndResidentialComplex(coin.getUser(), coin.getCoin());
             if(UC != null) {
                 UCLIST.add(UC);
             }
         }
         model.addAttribute("allClients", UCLIST);
         model.addAttribute("user",user);
-        return "brokerClients";
+        return "managerClients";
     }
 
-    @PostMapping("/broker/clients/buy")
+    @PostMapping("/manager/clients/buy")
     public String buyCoin(@AuthenticationPrincipal User user,
                             @RequestParam String count,
                             @RequestParam Long userId,
                             @RequestParam Long coinId,
                             Model model) {
         if(count.isEmpty()) {
-            return "redirect:/broker/clients";
+            return "redirect:/manager/clients";
         }
-        Coin coin = coinRepository.findById(coinId).orElse(new Coin());
+        ResidentialComplex residentialComplex = ResidentialComplexRepository.findById(coinId).orElse(new ResidentialComplex());
         User client = userService.findUserById(userId);
-        UserCoin userCoin = userCoinRepository.findByUserAndCoin(client,coin);
+        UserResidentialcomplex userCoin = userResidentialComplexRepository.findByUserAndResidentialComplex(client, residentialComplex);
         double plus = Double.parseDouble(count); //количество купленных монет
-        double val = plus*coin.getCost(); //стоимость покупки
+        double val = plus* residentialComplex.getCost(); //стоимость покупки
         if(userCoin != null && val <= client.getCash()) {
             double cur = userCoin.getCount();
             cur += plus;
             userCoin.setCount(cur);
-            userCoinRepository.save(userCoin);
+            userResidentialComplexRepository.save(userCoin);
             client.setCash(client.getCash()-val);
             userRepository.save(user);
-            return "redirect:/broker/clients";
+            return "redirect:/manager/clients";
         }
         else {
-            return "redirect:/broker";
+            return "redirect:/manager";
         }
     }
 
-    @PostMapping("/broker/clients/off")
+    @PostMapping("/manager/clients/off")
     public String clientOff(@AuthenticationPrincipal User user,
                           @RequestParam Long userId,
                           @RequestParam Long coinId,
                           Model model) {
-        Coin coin = coinRepository.findById(coinId).orElseThrow();
+        ResidentialComplex residentialComplex = ResidentialComplexRepository.findById(coinId).orElseThrow();
         User client = userService.findUserById(userId);
-        UserBrokerCoin uBC = userBrokerCoinRepository.findByUserAndCoin(client,coin);
+        UserManagerResidentialComplex uBC = userManagerResidentialComplexRepository.findByUserAndCoin(client, residentialComplex);
         if(uBC != null) {
-            userBrokerCoinRepository.delete(uBC);
+            userManagerResidentialComplexRepository.delete(uBC);
         }
-        return "redirect:/broker/clients";
+        return "redirect:/manager/clients";
     }
 }

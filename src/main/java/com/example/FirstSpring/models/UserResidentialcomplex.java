@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "t_user_coin")
-public class UserCoin {
+public class UserResidentialcomplex {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,16 +16,16 @@ public class UserCoin {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "coin_id")
-    private Coin coin;
+    private ResidentialComplex coin;
 
-    public UserCoin(User user, Coin coin, Double count) {
+    public UserResidentialcomplex(User user, ResidentialComplex residentialComplex, Double count) {
         this.user = user;
-        this.coin = coin;
+        this.coin = residentialComplex;
         this.count = count;
     }
 
 
-    public UserCoin(){
+    public UserResidentialcomplex(){
 
     }
     private Double count;
@@ -46,12 +46,12 @@ public class UserCoin {
         this.user = user;
     }
 
-    public Coin getCoin() {
+    public ResidentialComplex getCoin() {
         return coin;
     }
 
-    public void setCoin(Coin coin) {
-        this.coin = coin;
+    public void setCoin(ResidentialComplex residentialComplex) {
+        this.coin = residentialComplex;
     }
 
     public Double getCount() {

@@ -3,8 +3,8 @@ package com.example.FirstSpring.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "temporary_user_broker")
-public class TemporaryUserBroker {
+@Table(name = "temporary_user_manager")
+public class TemporaryUserManager {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -15,14 +15,14 @@ public class TemporaryUserBroker {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "coin_id")
-    private Coin coin;
+    private ResidentialComplex ResidentialComplex;
 
-    public TemporaryUserBroker() {
+    public TemporaryUserManager() {
     }
 
-    public TemporaryUserBroker(User user, Coin coin) {
+    public TemporaryUserManager(User user, ResidentialComplex residentialComplex) {
         this.user = user;
-        this.coin = coin;
+        this.ResidentialComplex = residentialComplex;
     }
 
     public Long getId() {
@@ -41,11 +41,11 @@ public class TemporaryUserBroker {
         this.user = user;
     }
 
-    public Coin getCoin() {
-        return coin;
+    public ResidentialComplex getCoin() {
+        return ResidentialComplex;
     }
 
-    public void setCoin(Coin coin) {
-        this.coin = coin;
+    public void setResidentialComplex(ResidentialComplex residentialComplex) {
+        this.ResidentialComplex = residentialComplex;
     }
 }

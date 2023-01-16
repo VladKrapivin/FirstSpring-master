@@ -11,10 +11,10 @@
   <div class="alert alert-info mt-2">
     <h3>У Вас уже есть менеджер для этого жилого комплекса.</h3>
     <h3>Можете разорвать контракт.</h3>
-    <p th:text="${coin.getName()}"></p>
+    <p th:text="${residentialComplex.getName()}"></p>
     <div class="text-end">
       <form action = "/hasBroker" method="POST" >
-        <input type="hidden" name="coinId" th:value="${coin.id}"/>
+        <input type="hidden" name="coinId" th:value="${residentialComplex.id}"/>
         <button type="submit" class="btn btn-warning">разорвать контракт</button>
       </form>
     </div>

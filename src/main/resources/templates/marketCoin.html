@@ -10,7 +10,7 @@
 
 <div class="container mt-5">
   <h3>Подтверждение покупки</h3>
-  <div th:each="el : ${coin}" class="alert alert-info mt-2">
+  <div th:each="el : ${residentialComplex}" class="alert alert-info mt-2">
     <form method="post" >
       <h3 th:text="${el.name}"></h3>
       <p><b>Стоимость: </b><span th:text="${el.cost}"></span></p>

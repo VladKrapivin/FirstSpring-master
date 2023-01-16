@@ -13,14 +13,14 @@
 <div class="container mt-5">
     <div th:each="el : ${usercoin}" class="alert alert-info mt-2">
         <form method="POST" >
-            <h3 th:text="${el.coin.getName()}"></h3>
+            <h3 th:text="${el.residentialComplex.getName()}"></h3>
             <h4>Количество<p th:text="${el.count}"></p></h4>
             <div class="text-end">
                 <a th:href="'/main/sell/'+${el.id}" class="btn btn-warning">Продать</a>
             </div>
         </form>
         <form method="get" action="/brokerInfo">
-            <input type="hidden" name="coinId" th:value="${el.coin.getId()}"/>
+            <input type="hidden" name="coinId" th:value="${el.residentialComplex.getId()}"/>
             <button type="submit" class="btn btn-warning">Информация о Менеджере</button>
         </form>
     </div>

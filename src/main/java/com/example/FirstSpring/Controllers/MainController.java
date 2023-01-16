@@ -21,13 +21,13 @@ public class MainController {
     @Autowired
     private UserRepository UserRepository;
     @Autowired
-    private UserCoinRepository UserCoinRepository;
+    private UserResidentialComplexRepository UserCoinRepository;
 
     @Autowired
-    private UserBrokerCoinRepository userBrokerCoinRepository;
+    private UserManagerResidentialComplexRepository userBrokerCoinRepository;
 
     @Autowired
-    private TemporaryUserBrokerRepository temporaryUserBrokerRepository;
+    private TemporaryUserManagerRepository temporaryUserBrokerRepository;
 
     @GetMapping("/")
     public String first( Model model) {
@@ -37,7 +37,7 @@ public class MainController {
     @GetMapping("/main")
     public String main(@AuthenticationPrincipal User user,
                        Model model) {
-        List<UserCoin> userCoins = UserCoinRepository.findByUser(user);
+        List<UserResidentialcomplex> userCoins = UserCoinRepository.findByUser(user);
         model.addAttribute("usercoin",userCoins);
         model.addAttribute("user",user);
         return "main";
@@ -46,7 +46,7 @@ public class MainController {
     @GetMapping("/mainCash")
     public String mainCash(@AuthenticationPrincipal User user,
                        Model model) {
-        List<UserCoin> userCoins = UserCoinRepository.findByUser(user);
+        List<UserResidentialcomplex> userCoins = UserCoinRepository.findByUser(user);
         if(user.getCash() == null) {
             user.setCash(5.0);
             UserRepository.save(user);
@@ -62,7 +62,7 @@ public class MainController {
     @GetMapping("/market")
     public String market( @AuthenticationPrincipal User user,
                           Model model) {
-        Iterable<Coin> coin = coinRepository.findAll();
+        Iterable<ResidentialComplex> coin = coinRepository.findAll();
         model.addAttribute("coin",coin);
         model.addAttribute("user",user);
         return "market";
@@ -71,8 +71,8 @@ public class MainController {
     @GetMapping("/market/{id}")
     public String BuyCoin(@AuthenticationPrincipal User user,
                           @PathVariable(value = "id")Long id, Model model) {
-        Optional<Coin> coin = coinRepository.findById(id);
-        ArrayList<Coin> res = new ArrayList<>();
+        Optional<ResidentialComplex> coin = coinRepository.findById(id);
+        ArrayList<ResidentialComplex> res = new ArrayList<>();
         coin.ifPresent(res::add);
         model.addAttribute("coin", res);
         model.addAttribute("user",user);
@@ -84,10 +84,10 @@ public class MainController {
                             @PathVariable(value = "id")Long id,
                             @RequestParam String count,
                             Model model) {
-        Coin coin = coinRepository.findById(id).orElseThrow();
-        UserCoin userCoin = UserCoinRepository.findByUserAndCoin(user,coin);
+        ResidentialComplex residentialComplex = coinRepository.findById(id).orElseThrow();
+        UserResidentialcomplex userCoin = UserCoinRepository.findByUserAndResidentialComplex(user, residentialComplex);
         double plus = Double.parseDouble(count); //количество купленных монет
-        double val = plus*coin.getCost(); //стоимость покупки
+        double val = plus* residentialComplex.getCost(); //стоимость покупки
         if(userCoin != null && val <= user.getCash()) {
             double cur = userCoin.getCount();
             cur += plus;
@@ -98,7 +98,7 @@ public class MainController {
             return "redirect:/market";
         }
         else if(userCoin == null && val <= user.getCash()){
-            UserCoin newUserCoin = new UserCoin(user,coin,Double.parseDouble(count));
+            UserResidentialcomplex newUserCoin = new UserResidentialcomplex(user, residentialComplex,Double.parseDouble(count));
             UserCoinRepository.save(newUserCoin);
             user.setCash(user.getCash()-val);
             UserRepository.save(user);
@@ -112,8 +112,8 @@ public class MainController {
     @GetMapping("/main/sell/{id}")
     public String SellCoin(@AuthenticationPrincipal User user,
                            @PathVariable(value = "id")Long id, Model model) {
-        Optional<UserCoin> coin = UserCoinRepository.findById(id);
-        ArrayList<UserCoin> res = new ArrayList<>();
+        Optional<UserResidentialcomplex> coin = UserCoinRepository.findById(id);
+        ArrayList<UserResidentialcomplex> res = new ArrayList<>();
         coin.ifPresent(res::add);
         model.addAttribute("coin", res);
         model.addAttribute("user",user);
@@ -125,7 +125,7 @@ public class MainController {
                             @PathVariable(value = "id")Long id,
                             @RequestParam String count,
                             Model model) {
-        UserCoin usercoin = UserCoinRepository.findById(id).orElseThrow();
+        UserResidentialcomplex usercoin = UserCoinRepository.findById(id).orElseThrow();
         if(usercoin.getCount()<Double.parseDouble(count)) {
             return "redirect:/main";
         }
@@ -151,9 +151,9 @@ public class MainController {
     public String broker( @AuthenticationPrincipal User user,
                           @RequestParam Long coinId,
                           Model model) {
-        Optional<Coin> coin = coinRepository.findById(coinId);
-        UserBrokerCoin uBC = userBrokerCoinRepository.findByUserAndCoin(user,coin.get());
-        TemporaryUserBroker tUB = temporaryUserBrokerRepository.findByUserAndCoin(user, coin.get());
+        Optional<ResidentialComplex> coin = coinRepository.findById(coinId);
+        UserManagerResidentialComplex uBC = userBrokerCoinRepository.findByUserAndCoin(user,coin.get());
+        TemporaryUserManager tUB = temporaryUserBrokerRepository.findByUserAndCoin(user, coin.get());
         model.addAttribute("user",user);
         model.addAttribute("coin",coin.get());
         if(uBC != null) {
@@ -171,9 +171,9 @@ public class MainController {
     public String brokerRequest( @AuthenticationPrincipal User user,
                                  @RequestParam Long coinId,
                                  Model model) {
-        Optional<Coin> coin = coinRepository.findById(coinId);
-        TemporaryUserBroker temporaryUserBroker = new TemporaryUserBroker(user,coin.get());
-        temporaryUserBrokerRepository.save(temporaryUserBroker);
+        Optional<ResidentialComplex> coin = coinRepository.findById(coinId);
+        TemporaryUserManager temporaryUserManager = new TemporaryUserManager(user,coin.get());
+        temporaryUserBrokerRepository.save(temporaryUserManager);
             return "redirect:/main";
     }
 
@@ -181,8 +181,8 @@ public class MainController {
     public String hasBroker( @AuthenticationPrincipal User user,
                                  @RequestParam Long coinId,
                                  Model model) {
-        Optional<Coin> coin = coinRepository.findById(coinId);
-        UserBrokerCoin uBC = userBrokerCoinRepository.findByUserAndCoin(user,coin.get());
+        Optional<ResidentialComplex> coin = coinRepository.findById(coinId);
+        UserManagerResidentialComplex uBC = userBrokerCoinRepository.findByUserAndCoin(user,coin.get());
         if(uBC != null) {
             userBrokerCoinRepository.delete(uBC);
         }
@@ -193,10 +193,10 @@ public class MainController {
     public String hasRequest( @AuthenticationPrincipal User user,
                              @RequestParam Long coinId,
                              Model model) {
-        Optional<Coin> coin = coinRepository.findById(coinId);
-        TemporaryUserBroker temporaryUserBroker = temporaryUserBrokerRepository.findByUserAndCoin(user,coin.get());
-        if(temporaryUserBroker != null) {
-            temporaryUserBrokerRepository.delete(temporaryUserBroker);
+        Optional<ResidentialComplex> coin = coinRepository.findById(coinId);
+        TemporaryUserManager temporaryUserManager = temporaryUserBrokerRepository.findByUserAndCoin(user,coin.get());
+        if(temporaryUserManager != null) {
+            temporaryUserBrokerRepository.delete(temporaryUserManager);
         }
         return "redirect:/main";
     }

@@ -40,7 +40,7 @@ public class User implements UserDetails {
 //            @JoinColumn(name = "count")
 //    })
 //    @Transient
-//    private Map<Coin, Long> coins;
+//    private Map<ResidentialComplex, Long> coins;
 
     public Long getId() {
         return id;

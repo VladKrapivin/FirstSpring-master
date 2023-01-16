@@ -25,13 +25,13 @@ public class UserService implements UserDetailsService {
     RoleRepository roleRepository;
 
     @Autowired
-    UserCoinRepository userCoinRepository;
+    UserResidentialComplexRepository userResidentialComplexRepository;
 
     @Autowired
-    UserBrokerCoinRepository userBrokerCoinRepository;
+    UserManagerResidentialComplexRepository userManagerResidentialComplexRepository;
 
     @Autowired
-    TemporaryUserBrokerRepository temporaryUserBrokerRepository;
+    TemporaryUserManagerRepository temporaryUserManagerRepository;
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -71,21 +71,21 @@ public class UserService implements UserDetailsService {
     public boolean deleteUser(Long userId) {
         if (userRepository.findById(userId).isPresent()) {
             User user = userRepository.findById(userId).orElse(new User());
-            List<UserCoin> userCoins = userCoinRepository.findByUser(user);
-            List<UserBrokerCoin> userBrokerCoins = userBrokerCoinRepository.findByUser(user);
-            List<TemporaryUserBroker> temporaryUserBrokers = temporaryUserBrokerRepository.findByUser(user);
-            List<UserBrokerCoin> userBrokerCoins1 = userBrokerCoinRepository.findByBroker(user);
-            for(UserCoin coin : userCoins) {
-                userCoinRepository.delete(coin);
+            List<UserResidentialcomplex> userResidentialComplexes = userResidentialComplexRepository.findByUser(user);
+            List<UserManagerResidentialComplex> userManagerResidentialComplexes = userManagerResidentialComplexRepository.findByUser(user);
+            List<TemporaryUserManager> temporaryUserManagers = temporaryUserManagerRepository.findByUser(user);
+            List<UserManagerResidentialComplex> userManagerResidentialComplexes1 = userManagerResidentialComplexRepository.findByManager(user);
+            for(UserResidentialcomplex residentialComplex : userResidentialComplexes) {
+                userResidentialComplexRepository.delete(residentialComplex);
             }
-            for(UserBrokerCoin coin : userBrokerCoins) {
-                userBrokerCoinRepository.delete(coin);
+            for(UserManagerResidentialComplex residentialComplex : userManagerResidentialComplexes) {
+                userManagerResidentialComplexRepository.delete(residentialComplex);
             }
-            for(TemporaryUserBroker coin : temporaryUserBrokers) {
-                temporaryUserBrokerRepository.delete(coin);
+            for(TemporaryUserManager residentialComplex : temporaryUserManagers) {
+                temporaryUserManagerRepository.delete(residentialComplex);
             }
-            for(UserBrokerCoin coin : userBrokerCoins1) {
-                userBrokerCoinRepository.delete(coin);
+            for(UserManagerResidentialComplex residentialComplex : userManagerResidentialComplexes1) {
+                userManagerResidentialComplexRepository.delete(residentialComplex);
             }
             userRepository.deleteById(userId);
             return true;

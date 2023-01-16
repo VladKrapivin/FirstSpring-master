@@ -21,12 +21,12 @@
             <td th:text="${el.id}"></td>
             <td th:text="${el.user.getUsername()}"></td>
             <td th:text="${el.user.getId()}"></td>
-            <td th:text="${el.coin.getName()}"></td>
-            <td th:text="${el.coin.getId()}"></td>
+            <td th:text="${el.residentialComplex.getName()}"></td>
+            <td th:text="${el.residentialComplex.getId()}"></td>
             <td>
                 <form action="/broker" method="post">
                     <input type="hidden" name="clientId" th:value="${el.user.getId()}"/>
-                    <input type="hidden" name="coinId" th:value="${el.coin.getId()}"/>
+                    <input type="hidden" name="coinId" th:value="${el.residentialComplex.getId()}"/>
                     <button type="submit" class="btn btn-danger">Принять заявку</button>
                 </form>
             </td>

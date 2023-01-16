@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class AdminController {
@@ -22,13 +21,13 @@ public class AdminController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserBrokerCoinRepository userBrokerCoinRepository;
+    private UserManagerResidentialComplexRepository userBrokerCoinRepository;
     @Autowired
     private CoinRepository coinRepository;
     @Autowired
-    private UserCoinRepository userCoinRepository;
+    private UserResidentialComplexRepository userCoinRepository;
     @Autowired
-    private TemporaryUserBrokerRepository temporaryUserBrokerRepository;
+    private TemporaryUserManagerRepository temporaryUserBrokerRepository;
 
     @GetMapping("/admin")
     public String userList(@AuthenticationPrincipal User user,
@@ -48,13 +47,13 @@ public class AdminController {
         }
         if (action.equals("set_role")) {
             User usr = userService.findUserById(userId);
-            usr.getRoles().add(new Role(3L,"ROLE_BROKER"));
+            usr.getRoles().add(new Role(3L,"ROLE_MANAGER"));
             userRepository.save(usr);
         }
         if (action.equals("delete_role")) {
             User usr = userService.findUserById(userId);
-            List<UserBrokerCoin> userBrokerCoins = userBrokerCoinRepository.findByBroker(usr);
-            for(UserBrokerCoin coin : userBrokerCoins){
+            List<UserManagerResidentialComplex> userManagerResidentialComplexes = userBrokerCoinRepository.findByManager(usr);
+            for(UserManagerResidentialComplex coin : userManagerResidentialComplexes){
                 userBrokerCoinRepository.delete(coin);
             }
             usr.getRoles().clear();
@@ -65,52 +64,52 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/coins")
+    @GetMapping("/admin/ResidentialComplexes")
     public String  setCoin(@AuthenticationPrincipal User user,
                            Model model) {
-        model.addAttribute("allCoins", coinRepository.findAll());
+        model.addAttribute("allResidentialComplexes", coinRepository.findAll());
         model.addAttribute("user",user);
-        return "adminCoins";
+        return "adminResidentialComplexes";
     }
 
-    @GetMapping("/admin/castCoin")
+    @GetMapping("/admin/castResidentialComplexes")
     public String  makeCoin(@AuthenticationPrincipal User user,
                            Model model) {
         model.addAttribute("user",user);
-        return "adminCoinCast";
+        return "adminResidentialComplexesCast";
     }
 
-    @PostMapping("/admin/castCoin")
+    @PostMapping("/admin/castResidentialComplexes")
     public String  addCoin(@AuthenticationPrincipal User user,
                             @RequestParam String name,
                             @RequestParam String cost,
                             Model model) {
-        Coin coin = new Coin(name,Double.parseDouble(cost));
-        if(coin != null) {
-            coinRepository.save(coin);
+        ResidentialComplex residentialComplex = new ResidentialComplex(name,Double.parseDouble(cost));
+        if(residentialComplex != null) {
+            coinRepository.save(residentialComplex);
         }
         model.addAttribute("user",user);
-        return "redirect:/admin/coins";
+        return "redirect:/admin/ResidentialComplexes";
     }
 
-    @PostMapping("/admin/deleteCoin")
+    @PostMapping("/admin/deleteResidentialComplexes")
     public String  delCoin(@AuthenticationPrincipal User user,
                            @RequestParam Long coinId,
                            Model model) {
-        Coin coin = coinRepository.findById(coinId).orElse(new Coin());
-        List<UserCoin> userCoins = userCoinRepository.findByCoin(coin);
-        List<UserBrokerCoin> userBrokerCoins = userBrokerCoinRepository.findByCoin(coin);
-        List<TemporaryUserBroker> temporaryUserBrokers = temporaryUserBrokerRepository.findByCoin(coin);
-        for(UserCoin val : userCoins) {
+        ResidentialComplex residentialComplex = coinRepository.findById(coinId).orElse(new ResidentialComplex());
+        List<UserResidentialcomplex> userCoins = userCoinRepository.findByResidentialComplex(residentialComplex);
+        List<UserManagerResidentialComplex> userManagerResidentialComplexes = userBrokerCoinRepository.findByResidentialComplex(residentialComplex);
+        List<TemporaryUserManager> temporaryUserManagers = temporaryUserBrokerRepository.findByCoin(residentialComplex);
+        for(UserResidentialcomplex val : userCoins) {
             userCoinRepository.delete(val);
         }
-        for(UserBrokerCoin val : userBrokerCoins) {
+        for(UserManagerResidentialComplex val : userManagerResidentialComplexes) {
             userBrokerCoinRepository.delete(val);
         }
-        for(TemporaryUserBroker val : temporaryUserBrokers) {
+        for(TemporaryUserManager val : temporaryUserManagers) {
             temporaryUserBrokerRepository.delete(val);
         }
-        coinRepository.delete(coin);
+        coinRepository.delete(residentialComplex);
         return "redirect:/admin";
     }
 

@@ -9,9 +9,9 @@
 <header th:insert = "\blocks\header :: header"></header>
 
 <div class="container mt-5">
-    <div th:each="el : ${coin}" class="alert alert-info mt-2">
+    <div th:each="el : ${residentialComplex}" class="alert alert-info mt-2">
         <form method="POST" >
-        <p type="hidden" name="coin" value="${el}"></p>
+        <p type="hidden" name="residentialComplex" value="${el}"></p>
         <h3 th:text="${el.name}"></h3>
         <h4>Стоимость<p th:text="${el.cost}"></p></h4>
         <div class="text-end">

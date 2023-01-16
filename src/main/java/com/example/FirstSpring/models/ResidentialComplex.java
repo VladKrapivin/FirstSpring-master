@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Coin {
+public class ResidentialComplex {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -14,10 +14,10 @@ public class Coin {
     private String name;
     private Double cost;
 
-    public Coin() {
+    public ResidentialComplex() {
     }
 
-    public Coin(String name, Double cost) {
+    public ResidentialComplex(String name, Double cost) {
         this.name = name;
         this.cost = cost;
     }

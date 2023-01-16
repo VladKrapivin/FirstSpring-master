@@ -10,10 +10,10 @@
 <div class="container mt-5">
     <div class="alert alert-info mt-2">
             <h3>У Вас нет менеджера для этого жилого комплекса. Вы можете подать заявку.</h3>
-            <p th:text="${coin.getName()}"></p>
+            <p th:text="${residentialComplex.getName()}"></p>
             <div class="text-end">
                 <form action = "/brokerInfo" method="POST" >
-                <input type="hidden" name="coinId" th:value="${coin.id}"/>
+                <input type="hidden" name="coinId" th:value="${residentialComplex.id}"/>
                 <button type="submit" class="btn btn-warning">Подать заявку</button>
                 </form>
             </div>

@@ -11,10 +11,10 @@
   <div class="alert alert-info mt-2">
     <h3>Вы уже подали заявку на менеджера.</h3>
     <h3>Можете отменить заявку.</h3>
-    <p th:text="${coin.getName()}"></p>
+    <p th:text="${residentialComplex.getName()}"></p>
     <div class="text-end">
       <form action = "/hasRequest" method="POST" >
-        <input type="hidden" name="coinId" th:value="${coin.id}"/>
+        <input type="hidden" name="coinId" th:value="${residentialComplex.id}"/>
         <button type="submit" class="btn btn-warning">Отменить заявку</button>
       </form>
     </div>
