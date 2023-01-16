@@ -10,18 +10,6 @@
 
 <div id="link"></div>
 
-<script type="text/javascript">
-var obj = document.getElementById('link');
-var timerFIG = 10; // Время в секундах, через которое появляется кнопка
-var timer = setInterval("startTimer()",1000);
-function startTimer() {
-if(timerFIG !== 1) {
-timerFIG--;
-} else {
-clearInterval(timer);
-obj.innerHTML = '<form action="/mainCash"><button type="submit" class="btn btn-warning">Заработать Эфиры</button></form>'; // кнопка
-}}
-</script>
 <div class="container mt-5">
     <div th:each="el : ${usercoin}" class="alert alert-info mt-2">
         <form method="POST" >
@@ -33,7 +21,7 @@ obj.innerHTML = '<form action="/mainCash"><button type="submit" class="btn btn-w
         </form>
         <form method="get" action="/brokerInfo">
             <input type="hidden" name="coinId" th:value="${el.coin.getId()}"/>
-            <button type="submit" class="btn btn-warning">Информация о Брокере</button>
+            <button type="submit" class="btn btn-warning">Информация о Менеджере</button>
         </form>
     </div>
 </div>

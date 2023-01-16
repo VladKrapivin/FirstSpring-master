@@ -9,7 +9,7 @@
 <header th:insert = "\blocks\header :: header"></header>
 <div class="container mt-5">
     <div class="alert alert-info mt-2">
-            <h3>У Вас нет брокера для этой монеты. Вы можете подать заявку.</h3>
+            <h3>У Вас нет менеджера для этого жилого комплекса. Вы можете подать заявку.</h3>
             <p th:text="${coin.getName()}"></p>
             <div class="text-end">
                 <form action = "/brokerInfo" method="POST" >

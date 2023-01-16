@@ -13,7 +13,7 @@
   <div th:each="el : ${coin}" class="alert alert-info mt-2">
     <form method="post" >
       <h3 th:text="${el.coin.getName()}"></h3>
-      <p><b>Стоимость одного койна: </b><span th:text="${el.coin.getCost()}"></span></p>
+      <p><b>Стоимость одного квадратного метра: </b><span th:text="${el.coin.getCost()}"></span></p>
       <p><b>Количество: </b><span th:text="${el.count}"></span></p>
       <div class="form_floating">
         <input type="text" name="count" placeholder="Введите количество">

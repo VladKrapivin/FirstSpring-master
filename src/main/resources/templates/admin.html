@@ -28,14 +28,14 @@
                     <form action="/admin" method="post">
                         <input type="hidden" name="userId" th:value="${el.id}"/>
                         <input type="hidden" name="action" th:value="set_role"/>
-                        <button type="submit" class="btn btn-danger">Добавить роль брокера</button>
+                        <button type="submit" class="btn btn-danger">Добавить роль менеджера</button>
                     </form>
                 </td>
                 <td>
                     <form action="/admin" method="post">
                         <input type="hidden" name="userId" th:value="${el.id}"/>
                         <input type="hidden" name="action" th:value="delete_role"/>
-                        <button type="submit" class="btn btn-danger">Убрать роль брокера</button>
+                        <button type="submit" class="btn btn-danger">Убрать роль менеджера</button>
                     </form>
                 </td>
                 <td>
