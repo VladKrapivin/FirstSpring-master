@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <title>Log in with your account</title>
+    <link rel = "stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+<header th:insert = "\blocks\header :: header"></header>
+<header th:insert = "\blocks\admin_header :: header_ad"></header>
+<div  class=" container alert alert-info mt-2">
+    <form method="POST" >
+        <h3>Введите название монеты: <input class="form-control" name="name"></h3>
+        <h3>Введите цену монеты (в эфирах): <input class="form-control" name="cost"></h3>
+        <div class="text-end">
+            <button type="submit" class="btn btn-warning">Подтверждение</button>
+        </div>
+    </form>
+</div>
+</table>
+<div th:insert = "\blocks\footer :: footer" class="mt-auto py-4 py-md-5 bg-light"></div>
+</body>
+</html>

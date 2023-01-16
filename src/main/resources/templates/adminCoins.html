@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="utf-8">
+  <title>Log in with your account</title>
+  <link rel = "stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+<header th:insert = "\blocks\header :: header"></header>
+<header th:insert = "\blocks\admin_header :: header_ad"></header>
+<div class="mt-2" align="center">
+<a href="/admin/castCoin" class="btn btn-success">Add</a>
+</div>
+<table class="table table-hover table-bordered border-primary alert alert-info mt-2">
+  <thead align="center">
+  <th>ID</th>
+  <th>Coin Name</th>
+  <th>Coin Cost</th>
+  </thead>
+  <div th:each ="el : ${allCoins}" >
+    <tr>
+      <td th:text="${el.id}"></td>
+      <td th:text="${el.name}"></td>
+      <td th:text="${el.cost}"></td>
+      <td>
+        <form action="/admin/deleteCoin" method="post">
+          <input type="hidden" name="coinId" th:value="${el.id}"/>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+  </div>
+</table>
+<div th:insert = "\blocks\footer :: footer" class="mt-auto py-4 py-md-5 bg-light"></div>
+</body>
+</html>

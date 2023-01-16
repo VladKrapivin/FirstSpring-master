@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <title>Биржа</title>
+  <meta charset="UTF-8" />
+  <link rel = "stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+<header th:insert = "\blocks\header :: header"></header>
+<header th:insert = "\blocks\broker_header :: header_br"></header>
+<table class="table table-hover table-bordered border-primary alert alert-info mt-2">
+  <thead align="center">
+  <th>ID</th>
+  <th>UserName</th>
+  <th>User ID</th>
+  <th>Coin</th>
+  <th>Coin ID</th>
+  <th>Coin cost</th>
+  <th>User balance</th>
+  <th>Current number of Coin</th>
+  <th>Coin number</th>
+  </thead>
+  <div th:each="el : ${allClients}" >
+    <tr>
+      <td th:text="${el.id}"></td>
+      <td th:text="${el.user.getUsername()}"></td>
+      <td th:text="${el.user.getId()}"></td>
+      <td th:text="${el.coin.getName()}"></td>
+      <td th:text="${el.coin.getId()}"></td>
+      <td th:text="${el.coin.getCost()}"></td>
+      <td th:text="${el.user.getCash()}"></td>
+      <td th:text="${el.count}"></td>
+      <form method="POST" action="/broker/clients/buy">
+        <td><input class="form-control" name="count"></td>
+      <td>
+        <input type="hidden" name="userId" th:value="${el.user.getId()}">
+        <input type="hidden" name="coinId" th:value="${el.coin.getId()}">
+      <button type="submit" class="btn form-control btn-warning">Купить</button>
+    </td>
+      </form>
+      <td>
+        <form method="POST" action="/broker/clients/off">
+          <input type="hidden" name="userId" th:value="${el.user.getId()}">
+          <input type="hidden" name="coinId" th:value="${el.coin.getId()}">
+          <button type="submit" class="btn form-control btn-danger">Отказаться</button>
+        </form>
+      </td>
+    </tr>
+  </div>
+</div>
+</table>
+<div th:insert = "\blocks\footer :: footer" class="mt-auto py-4 py-md-5 bg-light"></div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <title>Log in with your account</title>
+    <link rel = "stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+<header th:insert = "\blocks\header :: header"></header>
+<header th:insert = "\blocks\admin_header :: header_ad"></header>
+    <table class="table table-hover table-bordered border-primary alert alert-info mt-2">
+        <thead align="center">
+        <th>ID</th>
+        <th>UserName</th>
+        <th>Password</th>
+        <th>Roles</th>
+        </thead>
+        <div th:each ="el : ${allUsers}" >
+            <tr>
+                <td th:text="${el.id}"></td>
+                <td th:text="${el.username}"></td>
+                <td th:text="${el.password}"></td>
+                <td>
+                    <div th:each="role : ${el.roles}"><span th:text="${role.name}"></span></div>
+                </td>
+                <td>
+                    <form action="/admin" method="post">
+                        <input type="hidden" name="userId" th:value="${el.id}"/>
+                        <input type="hidden" name="action" th:value="set_role"/>
+                        <button type="submit" class="btn btn-danger">Добавить роль брокера</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/admin" method="post">
+                        <input type="hidden" name="userId" th:value="${el.id}"/>
+                        <input type="hidden" name="action" th:value="delete_role"/>
+                        <button type="submit" class="btn btn-danger">Убрать роль брокера</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/admin" method="post">
+                        <input type="hidden" name="userId" th:value="${el.id}"/>
+                        <input type="hidden" name="action" th:value="delete"/>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </div>
+    </table>
+<footer th:insert = "\blocks\footer :: footer" class="mt-auto py-4 py-md-5 bg-light"></footer>
+</body>
+</html>

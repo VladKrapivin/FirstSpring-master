@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <title>Log in with your account</title>
+    <link rel = "stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+<header th:insert = "\blocks\header :: header"></header>
+<header th:insert = "\blocks\broker_header :: header_br"></header>
+<table class="table table-hover table-bordered border-primary alert alert-info mt-2">
+    <thead align="center">
+    <th>ID</th>
+    <th>UserName</th>
+    <th>User ID</th>
+    <th>Coin</th>
+    <th>Coin ID</th>
+    </thead>
+    <div th:each ="el : ${allRequests}" >
+        <tr>
+            <td th:text="${el.id}"></td>
+            <td th:text="${el.user.getUsername()}"></td>
+            <td th:text="${el.user.getId()}"></td>
+            <td th:text="${el.coin.getName()}"></td>
+            <td th:text="${el.coin.getId()}"></td>
+            <td>
+                <form action="/broker" method="post">
+                    <input type="hidden" name="clientId" th:value="${el.user.getId()}"/>
+                    <input type="hidden" name="coinId" th:value="${el.coin.getId()}"/>
+                    <button type="submit" class="btn btn-danger">Принять заявку</button>
+                </form>
+            </td>
+  <!--          <td>
+                <form action="/admin" method="post">
+                    <input type="hidden" name="userId" th:value="${el.id}"/>
+                    <input type="hidden" name="action" th:value="delete"/>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+     -->
+        </tr>
+    </div>
+</table>
+<a href="/">Главная</a>
+<div th:insert = "\blocks\footer :: footer" class="mt-auto py-4 py-md-5 bg-light"></div>
+</body>
+</html>

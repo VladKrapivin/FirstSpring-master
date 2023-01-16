@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <title>Подтверждение</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel = "stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+<header th:insert = "\blocks\header :: header"></header>
+
+<div class="container mt-5">
+  <h3>Подтверждение покупки</h3>
+  <div th:each="el : ${coin}" class="alert alert-info mt-2">
+    <form method="post" >
+      <h3 th:text="${el.name}"></h3>
+      <p><b>Стоимость: </b><span th:text="${el.cost}"></span></p>
+      <div class="form_floating">
+      <input type="text" name="count" placeholder="Введите количество">
+      </div>
+      <div class="text-end">
+        <button type="submit" class="btn btn-warning">Купить</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div th:insert = "\blocks\footer :: footer" class="mt-auto py-4 py-md-5 bg-light"></div>
+</body>
+</html>
